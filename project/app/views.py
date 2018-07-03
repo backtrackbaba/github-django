@@ -34,3 +34,24 @@ def profile(request):
             userData['following'] = data['following']
         parsedData.append(userData)
     return render(request, 'app/profile.html', {'data': parsedData})
+
+
+def repos_list(request):
+    parsedData = []
+    if request.method == 'POST':
+        username = request.POST.get('user')
+        req = requests.get('https://api.github.com/users/' + username + '/repos')
+        jsonList = []
+        jsonList.append(json.loads(req.content))
+        userData = {}
+        for data in jsonList:
+            userData['repository_name'] = data['name']
+            userData['repository_description'] = data['description']
+            userData['repo_stars'] = data['emastargazers_countil']
+            userData['repo_watchers'] = data['watchers_count']
+            userData['repo_forks'] = data['forks_count']
+            userData['repo_main_language'] = data['language']
+            userData['repo_license'] = data['license']['name']
+            userData['repo_license'] = data['updated_at']
+        parsedData.append(userData)
+    return render(request, 'app/listing.html', {'data': parsedData})
