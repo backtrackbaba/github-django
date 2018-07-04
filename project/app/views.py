@@ -18,6 +18,9 @@ def test(request):
 def profile(request):
     parsedData = []
     if request.method == 'POST':
+        print("========================================================")
+        print(request)
+        print("========================================================")
         username = request.POST.get('user')
         req = requests.get('https://api.github.com/users/' + username)
         jsonList = []
@@ -41,17 +44,22 @@ def repos_list(request):
     if request.method == 'POST':
         username = request.POST.get('user')
         req = requests.get('https://api.github.com/users/' + username + '/repos')
-        jsonList = []
-        jsonList.append(json.loads(req.content))
+        # jsonList = []
+        req_data = (json.loads(req.content))
         userData = {}
-        for data in jsonList:
-            userData['repository_name'] = data['name']
-            userData['repository_description'] = data['description']
-            userData['repo_stars'] = data['emastargazers_countil']
+        for data in req_data:
+            print(data)
+            userData['repo_name'] = data['name']
+            userData['repo_description'] = data['description']
+            userData['repo_stars'] = data['stargazers_count']
             userData['repo_watchers'] = data['watchers_count']
             userData['repo_forks'] = data['forks_count']
             userData['repo_main_language'] = data['language']
-            userData['repo_license'] = data['license']['name']
-            userData['repo_license'] = data['updated_at']
+            if data['license']:
+                userData['repo_license'] = data['license']['name']
+            else:
+                userData['repo_license'] = "NO LICENSE"
+            
+            userData['repo_updated_at'] = data['updated_at']
         parsedData.append(userData)
     return render(request, 'app/listing.html', {'data': parsedData})

@@ -10,7 +10,7 @@
 <h1 class="text-center"> Github User Data </h1>
   <div class="col-lg-12">
       <style>
-        .form-signin {
+        .button-custom {
           max-width: 550px;
           padding: 15px;
           margin: 0 auto;
@@ -19,7 +19,7 @@
 
 
       <div class="container text-center">
-          <form class="form-signin" id="login_form" method="post" action="/app/profile/">
+          <form class="button-custom" id="login_form" method="post" action="/app/profile/">
             
             {% csrf_token %}
             
@@ -61,7 +61,14 @@
           
           </tbody>
           </table>
+          <br>
+
       </div>
+    </div>
+    <div class="container text-center">
+        <div class="row button-custom">
+                <a href="/app/listing/" class="btn btn-lg btn-primary btn-block" role="button">List All Repositories</a>
+        </div>
     </div>
 </body>
 </html>
